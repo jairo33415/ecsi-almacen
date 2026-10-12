@@ -12,22 +12,43 @@ permissions:
 jobs:
   firmar:
     runs-on: ubuntu-latest
+    env:
+      KS_PASS: ${{ secrets.KEYSTORE_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Preparar y firmar
         run: |
+          if [ -z "$KS_PASS" ]; then echo "Falta el secreto KEYSTORE_PASSWORD"; exit 1; fi
           APK=$(find . -maxdepth 1 -name '*.apk' | head -1)
           if [ -z "$APK" ]; then echo "No hay ningun .apk en el repositorio"; exit 1; fi
           cp "$APK" sin-firmar.apk
           BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)
-          keytool -genkeypair -keystore ecsi.jks -alias ecsi -keyalg RSA -keysize 2048 -validity 10000 -storepass ecsi123456 -keypass ecsi123456 -dname "CN=ECSI Almacen, O=ECSI del Caribe, C=CO"
+          if [ ! -f ecsi.jks ]; then
+            keytool -genkeypair -keystore ecsi.jks -storetype PKCS12 -alias ecsi -keyalg RSA -keysize 2048 -validity 10000 -storepass "$KS_PASS" -keypass "$KS_PASS" -dname "CN=ECSI Almacen, O=ECSI del Caribe"
+            git config user.name "github-actions"
+            git config user.email "github-actions@users.noreply.github.com"
+            git add ecsi.jks
+            git commit -m "Agregar llave de firma permanente"
+            git push
+          fi
           "$BT/zipalign" -f -p 4 sin-firmar.apk alineado.apk
-          "$BT/apksigner" sign --ks ecsi.jks --ks-pass pass:ecsi123456 --key-pass pass:ecsi123456 --out ECSI-Almacen.apk alineado.apk
+          "$BT/apksigner" sign --ks ecsi.jks --ks-pass env:KS_PASS --key-pass env:KS_PASS --out ECSI-Almacen.apk alineado.apk
           "$BT/apksigner" verify --verbose ECSI-Almacen.apk
+          PKG=$("$BT/aapt" dump badging ECSI-Almacen.apk | sed -n "s/^package: name='\([^']*\)'.*/\1/p")
+          FP=$(keytool -list -v -keystore ecsi.jks -storepass "$KS_PASS" | grep 'SHA256:' | head -1 | sed 's/.*SHA256: //')
+          echo "PACKAGE: $PKG"
+          echo "SHA256: $FP"
+          {
+            echo "### Datos para assetlinks.json"
+            echo ""
+            echo "Package name: \`$PKG\`"
+            echo ""
+            echo "SHA-256: \`$FP\`"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Publicar el APK firmado
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "apk-${{ github.run_number }}" ECSI-Almacen.apk --repo "${{ github.repository }}" --title "ECSI Almacen APK ${{ github.run_number }}" --notes "APK firmado, listo para instalar."
+          gh release create "apk-${{ github.run_number }}" ECSI-Almacen.apk --repo "${{ github.repository }}" --title "ECSI Almacén APK ${{ github.run_number }}" --notes "APK firmado, listo para instalar."
