@@ -1,0 +1,33 @@
+name: Firmar APK
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '*.apk'
+
+permissions:
+  contents: write
+
+jobs:
+  firmar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Preparar y firmar
+        run: |
+          APK=$(find . -maxdepth 1 -name '*.apk' | head -1)
+          if [ -z "$APK" ]; then echo "No hay ningun .apk en el repositorio"; exit 1; fi
+          cp "$APK" sin-firmar.apk
+          BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)
+          keytool -genkeypair -keystore ecsi.jks -alias ecsi -keyalg RSA -keysize 2048 -validity 10000 -storepass ecsi123456 -keypass ecsi123456 -dname "CN=ECSI Almacen, O=ECSI del Caribe, C=CO"
+          "$BT/zipalign" -f -p 4 sin-firmar.apk alineado.apk
+          "$BT/apksigner" sign --ks ecsi.jks --ks-pass pass:ecsi123456 --key-pass pass:ecsi123456 --out ECSI-Almacen.apk alineado.apk
+          "$BT/apksigner" verify --verbose ECSI-Almacen.apk
+
+      - name: Publicar el APK firmado
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "apk-${{ github.run_number }}" ECSI-Almacen.apk --repo "${{ github.repository }}" --title "ECSI Almacen APK ${{ github.run_number }}" --notes "APK firmado, listo para instalar."
