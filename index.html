@@ -48,12 +48,43 @@ nav{left:10px;right:10px;bottom:calc(8px + env(safe-area-inset-bottom,0px));bord
 .stk{display:flex;height:10px;border-radius:9px;overflow:hidden;background:var(--line)}.stk i{display:block;height:100%}
 .btn.s.e{background:var(--ok);color:#fff}
 .row{padding:10px 0}
+.lgn{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:20px;overflow:auto;background:linear-gradient(160deg,#04202e,#073b52 55%,#0a5b7a)}
+.lgn::before{content:'';position:absolute;inset:-20%;background:radial-gradient(600px 420px at 18% 12%,#12a0c466,transparent),radial-gradient(520px 420px at 88% 88%,#0f87a955,transparent),radial-gradient(380px 300px at 80% 15%,#e19a0d22,transparent);animation:sw 16s ease-in-out infinite alternate}
+@keyframes sw{to{transform:translate(4%,3%) scale(1.12)}}
+.fi{position:absolute;left:var(--x);bottom:-70px;width:var(--s);height:var(--s);fill:none;stroke:#fff;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round;opacity:0;animation:fl var(--d) linear var(--l) infinite;pointer-events:none}
+.fi:nth-child(3n){stroke:#7fe3ff}.fi:nth-child(5n){stroke:#ffd27a}
+@keyframes fl{0%{transform:translateY(0) rotate(0);opacity:0}12%{opacity:.4}88%{opacity:.4}100%{transform:translateY(-115vh) rotate(var(--r));opacity:0}}
+.belt{position:absolute;left:0;right:0;bottom:0;height:78px;border-top:2px solid #ffffff2e;background:repeating-linear-gradient(90deg,#ffffff0d 0 22px,transparent 22px 44px);overflow:hidden;pointer-events:none}
+.trk{position:absolute;left:0;bottom:16px;display:flex;gap:64px;width:max-content;animation:tr 34s linear infinite}
+.trk svg{width:42px;height:42px;flex:none;fill:none;stroke:#fff;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;opacity:.55}
+@keyframes tr{to{transform:translateX(-50%)}}
+.lgb{position:relative;z-index:2;width:100%;max-width:380px;padding:26px 22px 20px;border-radius:26px;color:#fff;background:#ffffff14;border:1px solid #ffffff38;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 30px 60px -20px #000a,inset 0 1px 0 #ffffff30}
+.lgb .lg{width:68px;height:68px;margin:0 auto 10px;border-radius:20px;display:grid;place-items:center;background:linear-gradient(135deg,#12a0c4,#0a5b7a);box-shadow:0 12px 26px -8px #12a0c4aa}
+.lgb .lg svg{width:36px;height:36px;fill:none;stroke:#fff;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.lgb h1{margin:0;text-align:center;font-size:21px;letter-spacing:1.5px}.lgb .st{text-align:center;font-size:11px;letter-spacing:3px;color:#9fdcf0;margin:4px 0 20px}
+.lgb label{color:#cfe9f3}.lgb .pw{position:relative}
+.lgb input{background:#ffffff1f;border:1px solid #ffffff44;color:#fff;text-align:center;font-size:26px;letter-spacing:8px;padding:12px 44px}
+.lgb input::placeholder{color:#ffffff66;letter-spacing:6px}.lgb input:focus{outline:2px solid #7fe3ff;border-color:transparent}
+.lgb .eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:0;color:#cfe9f3;font-size:20px;padding:8px;cursor:pointer}
+.lgb .btn{background:linear-gradient(90deg,#12a0c4,#0f87a9);box-shadow:0 14px 26px -12px #12a0c4;margin-top:16px;font-size:16px;letter-spacing:.5px}.lgb .btn:disabled{opacity:.7}
+.lgb .w{color:#ffb4ac;text-align:center;min-height:18px}.lgb .ft{margin-top:16px;text-align:center;font-size:11px;color:#9fdcf0aa}
+.lgb .ow{margin-top:10px;text-align:center;font-size:12px;font-weight:700;color:#cfe9f3;letter-spacing:.5px}
+.own{text-align:center;font-size:11.5px;color:var(--mut);padding:2px 12px 14px}
+.lgb .fg{display:block;margin:12px auto 0;background:none;border:0;color:#9fdcf0;font-size:13px;text-decoration:underline;cursor:pointer}
+.shk{animation:shk .4s}@keyframes shk{20%,60%{transform:translateX(-9px)}40%,80%{transform:translateX(9px)}}
+@media(prefers-reduced-motion:reduce){.lgn::before,.fi,.trk{animation:none}}
 </style></head><body>
 <header><h1>🏭 ECSI DEL CARIBE<small>Almacén · inventario, despacho y consumo</small></h1><span class="sync" id="sync">📴 Local</span></header>
-<main id="app"></main><div id="toast"></div>
+<div class="lgn" id="login"><svg width="0" height="0" style="position:absolute"><symbol id="i-p" viewBox="0 0 24 24"><path d="M9 2h6v3h-1v2c2 1 3 3 3 5v8a3 3 0 0 1-3 3h-4a3 3 0 0 1-3-3v-8c0-2 1-4 3-5V5H9z"/><path d="M7 13h10"/></symbol><symbol id="i-d" viewBox="0 0 24 24"><path d="M12 2s6 7 6 12a6 6 0 0 1-12 0c0-5 6-12 6-12z"/><path d="M9 15a3 3 0 0 0 3 3"/></symbol><symbol id="i-b" viewBox="0 0 24 24"><path d="M5 8h14l-1 13H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/></symbol><symbol id="i-l" viewBox="0 0 24 24"><path d="M3 12V4h8l10 10-8 8L3 12z"/><circle cx="7.5" cy="8.5" r="1.5"/></symbol></svg><div id="bgf"></div><div class="belt"><div class="trk" id="trk"></div></div>
+<div class="lgb"><div class="lg"><svg viewBox="0 0 24 24"><path d="M3 21V9l6 3V9l6 3V5h3v16z"/><path d="M7 17h2M12 17h2"/></svg></div><h1>ECSI DEL CARIBE</h1><div class="st">SISTEMA DE ALMACÉN</div>
+<label>PIN DE ACCESO</label><div class="pw"><input id="lp" type="password" inputmode="numeric" autocomplete="off" placeholder="••••••"><button type="button" class="eye" onclick="const i=document.getElementById('lp');i.type=i.type==='password'?'text':'password'">👁</button></div>
+<div class="w" id="lm" style="margin-top:8px"></div><button class="btn" id="lb">Entrar</button><button type="button" class="fg" id="lf">¿Olvidaste tu PIN?</button><div class="ft">🔒 Acceso autorizado · Inventario, despacho y consumo</div><div class="ow">© 2026 · Creada por Jairo López</div></div></div>
+
+<main id="app"></main><div class="own">ECSI Almacén · Creada por Jairo López © 2026</div><div id="toast"></div>
 <nav id="nav"></nav>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script>
 const FB_CONFIG={apiKey:"AIzaSyAogJyRNn4nlJuVNr1nbQD-vJoLgBQ8aJw",authDomain:"ecsi-almacen.firebaseapp.com",projectId:"ecsi-almacen",storageBucket:"ecsi-almacen.firebasestorage.app",messagingSenderId:"685219272521",appId:"1:685219272521:web:93dd3a56187dab5d992c98"};
 function dl(name,data,mime){const b=new Blob([data],{type:mime||"text/plain"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)}
@@ -158,14 +189,24 @@ function restore(inp){const f=inp.files[0];if(!f)return;const r=new FileReader()
 /* ===== arranque + sincronización ===== */
 try{S=JSON.parse(localStorage.getItem('ecsi2')||localStorage.getItem('ecsi'))}catch(_){}if(!S||!S.products)S=JSON.parse(JSON.stringify(SEED));S.moves.forEach((m,i)=>{if(!m.id)m.id='L'+String(i).padStart(4,'0')});LEG=S.moves.filter(m=>m.id[0]==='L');NEW=S.moves.filter(m=>m.id[0]!=='L');rs();
 async function names(){}
-async function boot(){let db=null,us=null;try{try{UID=localStorage.getItem('ecsi_user')||''}catch(_){}if(!UID){UID=(prompt('¿Cuál es tu nombre? (queda registrado en cada movimiento)')||'').trim().slice(0,24)||'Usuario';try{localStorage.setItem('ecsi_user',UID)}catch(_){}}
- if(!firebase.apps.length)firebase.initializeApp(FB_CONFIG);db=firebase.firestore()}catch(_){}if(!db){sync(0);return}
+async function boot(){let db=null,us=null;
+ try{if(!firebase.apps.length)firebase.initializeApp(FB_CONFIG);db=firebase.firestore()}catch(_){}if(!db){sync(0);document.getElementById('lm').textContent='⚠ No se pudo cargar. Revisa tu internet y abre la app desde su enlace.';return}
+ const au=firebase.auth(),LG=document.getElementById('login');
+ await new Promise(res=>{let ok=false;au.onAuthStateChanged(u=>{if(u){let nm='';try{nm=localStorage.getItem('ecsi_user')||''}catch(_){}if(!nm){nm=(prompt('¿Cuál es tu nombre? (queda registrado en cada movimiento)')||'').trim().slice(0,24)||'Usuario';try{localStorage.setItem('ecsi_user',nm)}catch(_){}}UID=nm;LG.style.display='none';if(!ok){ok=true;res()}}else LG.style.display='grid'})});
  const cR=db.doc('meta/config'),lR=db.doc('meta/legacy');
  try{const c=await cR.get();if(!c.exists){let src=S;try{const o=await db.doc('ecsi/state').get();if(o.exists)src=o.data()}catch(_){}const mv=(src.moves||[]).map((m,i)=>({...m,id:'L'+String(i).padStart(4,'0')}));await cR.set({products:src.products,cfg:src.cfg,rev:Date.now()});await lR.set({moves:mv})}}catch(_){sync(0);return}
  DB=db;
  cR.onSnapshot(s=>{if(!s.exists)return;const r=s.data();S.products=r.products;S.cfg=r.cfg;S.rev=r.rev;sync(1);cache();rs(1)},()=>sync(0));
  lR.onSnapshot(s=>{LEG=s.exists?(s.data().moves||[]):[];merge()},()=>sync(0));
  db.collection('moves').onSnapshot(q=>{NEW=q.docs.map(d=>d.data()).sort((a,b)=>(a.ts||0)-(b.ts||0));merge();names(us)},()=>sync(0))}
-boot();
+document.getElementById('lb').onclick=async()=>{const m=document.getElementById('lm');m.textContent='';m.style.color='';const bb=document.getElementById('lb');bb.disabled=true;bb.textContent='Verificando…';try{await firebase.auth().signInWithEmailAndPassword(AMAIL,document.getElementById('lp').value)}catch(e){m.textContent=e.code==='auth/network-request-failed'?'⚠ Sin internet':e.code==='auth/too-many-requests'?'⚠ Demasiados intentos, espera unos minutos':'⚠ PIN incorrecto';const bx=document.querySelector('.lgb');bx.classList.remove('shk');void bx.offsetWidth;bx.classList.add('shk')}finally{bb.disabled=false;bb.textContent='Entrar'}};
+document.getElementById('lp').onkeydown=e=>{if(e.key==='Enter')document.getElementById('lb').click()};
+document.getElementById('sync').onclick=()=>{if(confirm('¿Cerrar sesión?'))firebase.auth().signOut().then(()=>location.reload())};
+const AMAIL='lopezjairojose6+almacen@gmail.com';
+document.getElementById('lf').onclick=async()=>{const m=document.getElementById('lm');m.style.color='';m.textContent='';if(!confirm('Enviaremos un enlace para restablecer el PIN al correo del administrador (lo***6@gmail.com). ¿Continuar?'))return;try{await firebase.auth().sendPasswordResetEmail(AMAIL);m.textContent='✔ Enlace enviado. Revisa el correo (y la carpeta Spam).';m.style.color='#9ff0c6'}catch(e){m.textContent=e.code==='auth/network-request-failed'?'⚠ Sin internet':'⚠ No se pudo enviar. Intenta de nuevo.'}};
+(function(){const T=['p','d','b','x','l'],c=document.getElementById('bgf'),k='http://www.w3.org/2000/svg';
+for(let i=0;i<20;i++){const s=document.createElementNS(k,'svg');s.setAttribute('class','fi');s.setAttribute('viewBox','0 0 24 24');s.innerHTML='<use href="#i-'+T[i%5]+'"/>';s.style.cssText='--x:'+((i*37)%96)+'%;--s:'+(26+(i*11)%36)+'px;--d:'+(15+(i*7)%15)+'s;--l:-'+((i*5)%24)+'s;--r:'+((i%2?1:-1)*(20+(i*13)%70))+'deg';c.appendChild(s)}
+const t=document.getElementById('trk');for(let n=0;n<2;n++)for(let i=0;i<10;i++){const s=document.createElementNS(k,'svg');s.setAttribute('viewBox','0 0 24 24');s.innerHTML='<use href="#i-'+T[(i*2)%5]+'"/>';t.appendChild(s)}})();
+boot().catch(()=>{document.getElementById('lm').textContent='⚠ Abre la app desde su enlace (https), no desde el archivo descargado.'});
 if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 </script></body></html>
